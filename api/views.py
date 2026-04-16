@@ -5,6 +5,8 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
 from .serializers import PostSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -77,6 +79,28 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    #  Filter backendlar
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    #  Search
+    search_fields = [
+        'title',
+        'content'
+    ]
+
+    #  Filter
+    filterset_fields = [
+        'title',
+        'created_at'
+    ]
+
+    #  Ordering
+    ordering_fields = ['created_at']
+
 
 class RegisterAPIView(APIView):
 
@@ -96,6 +120,7 @@ class RegisterAPIView(APIView):
         user.save()
 
         return Response({"message": "User yaratildi"}, status=201)
+
 
 class LoginAPIView(APIView):
 
