@@ -5,10 +5,15 @@ from rest_framework.routers import DefaultRouter
 from .views import PostViewSet
 from .views import RegisterAPIView, LoginAPIView, LogoutAPIView
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register('posts', PostViewSet)
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 urlpatterns = [
     # path('test/', test_api),
     # path('posts/', PostListCreateAPIView.as_view()),
@@ -18,5 +23,6 @@ urlpatterns = [
     path('register/', RegisterAPIView.as_view()),
     path('login/', LoginAPIView.as_view()),
     path('logout/', LogoutAPIView.as_view()),
-    path('token/', obtain_auth_token),
+    path('token/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
 ]

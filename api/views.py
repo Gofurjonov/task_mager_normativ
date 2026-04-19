@@ -1,15 +1,21 @@
 # from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.models import User
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework import status
+# from django.contrib.auth.models import User
+# from rest_framework.viewsets import ModelViewSet
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
+# from rest_framework import filters
+# from django_filters.rest_framework import DjangoFilterBackend
+# from .models import Post
+# from .serializers import PostSerializer
+# from django.contrib.auth import authenticate, login, logout
+
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework import filters
-from django_filters.rest_framework import DjangoFilterBackend
 from .models import Post
 from .serializers import PostSerializer
-from django.contrib.auth import authenticate, login, logout
+from .permissions import IsOwnerOrReadOnly
+from rest_framework.views import APIView
 
 
 # 1-normativ
@@ -77,29 +83,10 @@ from django.contrib.auth import authenticate, login, logout
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]
 
-    #  Filter backendlar
-    filter_backends = [
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    ]
-
-    #  Search
-    search_fields = [
-        'title',
-        'content'
-    ]
-
-    #  Filter
-    filterset_fields = [
-        'title',
-        'created_at'
-    ]
-
-    #  Ordering
-    ordering_fields = ['created_at']
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class RegisterAPIView(APIView):
