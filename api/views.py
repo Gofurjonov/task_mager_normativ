@@ -81,7 +81,7 @@ from rest_framework.views import APIView
 
 # 3-normativ
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-id')
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
