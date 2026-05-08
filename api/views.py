@@ -78,7 +78,7 @@ from rest_framework.views import APIView
 #         post.delete()
 #         return Response({"message": "Post o‘chirildi"}, status=204)
 
-
+from .tasks import notify_new_post
 # 3-normativ
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().order_by('-id')
@@ -87,6 +87,10 @@ class PostViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+        def perform_create(self, serializer):
+            post = serializer.save(author=self.request.user)
+            notify_new_post.delay(post.title)
 
 
 class RegisterAPIView(APIView):
