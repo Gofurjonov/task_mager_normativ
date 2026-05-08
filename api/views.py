@@ -133,3 +133,10 @@ class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         return Response({"message": "Logout qilindi"})
+
+
+from django.shortcuts import render
+
+
+def chat_page(request):
+    return render(request, "chat.html")

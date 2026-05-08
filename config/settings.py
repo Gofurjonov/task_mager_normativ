@@ -30,8 +30,12 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     'api',
+    'channels',
 
 ]
+
+ASGI_APPLICATION = 'config.asgi.application'
+
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 CELERY_ACCEPT_CONTENT = ['json']
@@ -123,3 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}

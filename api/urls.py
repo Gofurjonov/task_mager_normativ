@@ -2,7 +2,7 @@ from django.urls import path, include
 # from .views import test_api
 # from .views import PostListCreateAPIView, PostDetailAPIView
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet
+from .views import PostViewSet, chat_page
 from .views import RegisterAPIView, LoginAPIView, LogoutAPIView
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -14,6 +14,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+
 urlpatterns = [
     # path('test/', test_api),
     # path('posts/', PostListCreateAPIView.as_view()),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('logout/', LogoutAPIView.as_view()),
     path('token/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
+    path("chat/", chat_page),
 ]
